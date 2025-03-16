@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-public class HammurabiTest {
+public class HammurabiGameTest {
     
     Hammurabi ham;
     
@@ -107,19 +107,19 @@ public class HammurabiTest {
 //            assertTrue("Rats never ate " + j + "% of your grain.", counts[j] > 0);
 //        }
 //    }
-//
-//    @Test
-//    public final void testNewCostOfLand() {
-//        int[] cost = new int[24];
-//        for (int i = 0; i < 1000; i++) {
-//            int price = ham.newCostOfLand();
-//            assertTrue("Illegal cost of land: " + price, price >= 17 && price <= 23);
-//            cost[price] += 1;
-//        }
-//        for (int j = 17; j <= 23; j++) {
-//            assertTrue("You never have a land cost of " + j + " bushels per acre.", cost[j] > 0);
-//        }
-//    }
+
+    @Test
+    public final void testNewCostOfLand() {
+        int[] cost = new int[24];
+        for (int i = 0; i < 1000; i++) {
+            int price = ham.newCostOfLand();
+            assertTrue("Illegal cost of land: " + price, price >= 17 && price <= 23);
+            cost[price] += 1;
+        }
+        for (int j = 17; j <= 23; j++) {
+            assertTrue("You never have a land cost of " + j + " bushels per acre.", cost[j] > 0);
+        }
+    }
 
 }
 
