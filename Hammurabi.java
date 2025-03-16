@@ -8,6 +8,7 @@ public class Hammurabi {
     Scanner scan = new Scanner(System.in);
     int yearNum = 1;
     int population = 100;
+    int totalPop = 100;
     int grainBushels = 2800;
     int landOwned = 1000;
     int landVal = 19;
@@ -20,6 +21,8 @@ public class Hammurabi {
     int currentHarvest = 0;
     int rateOfHarvest = 0;
     int grainDestroyed = 0;
+    double percentageStarved = 0.0;
+    int acresPerPerson = 0;
 
     public static void main(String[] args) {
         new Hammurabi().playGame();
@@ -37,7 +40,7 @@ public class Hammurabi {
             if (uprising(this.population, this.starvationDeaths)) {
                 this.yearNum = 12;
             }
-            if (this.starvationDeaths == 0) {
+            while (this.starvationDeaths == 0) {
                 immigrants(this.population, this.landOwned, this.grainBushels);
             }
             harvest(this.plantedLand);
@@ -45,6 +48,7 @@ public class Hammurabi {
             newCostOfLand();
             this.yearNum++;
         }
+        calcEndGameStats();
         endGameSummary();
     }
 
@@ -87,12 +91,13 @@ public class Hammurabi {
 
     void endGameSummary() {
         if (uprising(this.population, this.starvationDeaths)) {
-            System.out.println(String.format("Due to your poor decisions, %s of %s people starved", this.starvationDeaths, this.population));
+            System.out.println(String.format("Due to your poor decisions, %s of %s people starved.", this.starvationDeaths, this.population));
             System.out.println("The remaining people revolted, removing you from office.");
-            System.out.println("Better luck next time.");
+            System.out.println("Better luck next time.\n");
         } else {
-            System.out.println(String.format("In your 10-year term of office, %s percent of the population starved, for a total of %s", null, null));
-            System.out.println(String.format("You started with %s acres per person, and ended with %s acres per person.", null, null));
+            System.out.println(String.format("In your 10-year term of office, %s percent of the population starved, for a total of %s.", this.percentageStarved, this.deaths));
+            System.out.println(String.format("You started with 10 acres per person, and ended with %s acres per person.", this.acresPerPerson));
+            System.out.println("Congratulations on your successful term!");
             //what other stats should be added?
         }
     }
@@ -105,7 +110,7 @@ public class Hammurabi {
         } else if (acresToBuy < 0) {
             acresToBuy = getNumber("O great Hammurabi, please use a positive number!\n");
         }
-        this.grainBushels -= acresToBuy * price;
+        this.grainBushels -= (acresToBuy * price);
         this.landOwned += acresToBuy;
         return acresToBuy;
     }
@@ -118,7 +123,7 @@ public class Hammurabi {
         } else if (acresToSell < 0) {
             acresToSell = getNumber("O great Hammurabi, please use a positive number!\n");
         }
-        this.grainBushels += acresToSell + price;
+        this.grainBushels += (acresToSell * price);
         this.landOwned -= acresToSell;
         return acresToSell;
     }
@@ -174,19 +179,16 @@ public class Hammurabi {
             uprisingImminent = true;
         } else {
             this.population -= this.starvationDeaths;
+            this.deaths += this.starvationDeaths;
         }
         return uprisingImminent;
     }
 
     int immigrants(int population, int acresOwned, int grainInStorage) {
         int numOfImmigrants = ((20 * acresOwned + grainInStorage) / (100 * population)) + 1;
-//        if (this.starvationDeaths != 0) {
-//            return numOfImmigrants;
-//        } else {
-//            numOfImmigrants = ((20 * acresOwned + grainInStorage) / (100 * population)) + 1;
-//        }
         this.newImmigrants = numOfImmigrants;
-        this.population += numOfImmigrants;
+        this.population += this.newImmigrants;
+        this.totalPop += this.newImmigrants;
         return numOfImmigrants;
     }
 
@@ -213,4 +215,10 @@ public class Hammurabi {
         this.landVal = rand.nextInt(17, 24);
         return this.landVal;
     }
+
+    void calcEndGameStats() {
+        this.percentageStarved = (double)this.starvationDeaths / this.totalPop;
+        this.acresPerPerson = this.landOwned / this.population;
+    }
+
 }
