@@ -51,10 +51,13 @@ public class Hammurabi {
 
             //plagueDeaths();
             starvationDeaths(this.population, this.bushelsFed);
-            uprising(this.population, this.starvationDeaths);
-            //immigrants();
+            if (uprising(this.population, this.starvationDeaths)) {
+                this.yearNum = 12;
+            }
+
+            immigrants(this.population, this.landOwned, this.grainBushels);
             harvest(this.plantedLand);
-            //grainEatenByRats();
+            //grainEatenByRats(this.grainBushels);
             newCostOfLand();
 
             this.yearNum++;
@@ -100,10 +103,15 @@ public class Hammurabi {
     }
 
     void endGameSummary() {
-        System.out.println(String.format("In your 10-year term of office, %s percent of the population starved, for a total of %s", null, null));
-        System.out.println(String.format("You started with %s acres per person, and ended with %s acres per person.", null, null));
-        //what other stats should be added?
-
+        if (uprising(this.population, this.starvationDeaths)) {
+            System.out.println(String.format("Due to your poor decisions, %s of %s people starved", this.starvationDeaths, this.population));
+            System.out.println("The remaining people revolted, removing you from office.");
+            System.out.println("Better luck next time.");
+        } else {
+            System.out.println(String.format("In your 10-year term of office, %s percent of the population starved, for a total of %s", null, null));
+            System.out.println(String.format("You started with %s acres per person, and ended with %s acres per person.", null, null));
+            //what other stats should be added?
+        }
     }
 
     int askHowManyAcresToBuy(int price, int bushels) {
@@ -111,6 +119,8 @@ public class Hammurabi {
         if (acresToBuy * price > bushels) {
             acresToBuy = getNumber("O great Hammurabi, surely you jest! " +
                     "We only have " + bushels + " bushels left!\n");
+        } else if (acresToBuy < 0) {
+            acresToBuy = getNumber("O great Hammurabi, please use a positive number!\n");
         }
         this.grainBushels -= acresToBuy * price;
         this.landOwned += acresToBuy;
@@ -122,6 +132,8 @@ public class Hammurabi {
         if (acresToSell > acresOwned) {
             acresToSell = getNumber("O great Hammurabi, surely you jest! " +
                     "We only have " + acresOwned + " acres of land!\n");
+        } else if (acresToSell < 0) {
+            acresToSell = getNumber("O great Hammurabi, please use a positive number!\n");
         }
         this.grainBushels += acresToSell + price;
         this.landOwned -= acresToSell;
@@ -133,6 +145,8 @@ public class Hammurabi {
         if (grainsFed > bushels) {
             grainsFed = getNumber("O great Hammurabi, surely you jest! " +
                     "We only have " + bushels + " bushels left!\n");
+        } else if (grainsFed < 0) {
+            grainsFed = getNumber("O great Hammurabi, please use a  positive number!\n");
         }
         this.grainBushels -= grainsFed;
         this.bushelsFed = grainsFed;
@@ -150,6 +164,8 @@ public class Hammurabi {
         } else if (acresToPlant > bushels) {
             acresToPlant = getNumber("O great Hammurabi, surely you jest! " +
                     "We only have " + bushels + " bushels to use for seeds!\n");
+        } else if (acresToPlant < 0) {
+            acresToPlant = getNumber("O great Hammurabi, please use a positive number!\n");
         }
         this.grainBushels -= acresToPlant;
         this.plantedLand = acresToPlant;
@@ -173,13 +189,22 @@ public class Hammurabi {
         boolean uprisingImminent = false;
         if ((double)howManyPeopleStarved / population > .45) {
             uprisingImminent = true;
+        } else {
+            this.population -= this.starvationDeaths;
         }
-        this.population -= this.starvationDeaths;
         return uprisingImminent;
     }
 
     int immigrants(int population, int acresOwned, int grainInStorage) {
-        return 0;
+        int numOfImmigrants = 0;
+        if (this.starvationDeaths != 0) {
+            return numOfImmigrants;
+        } else {
+            numOfImmigrants = ((20 * acresOwned + grainInStorage) / (100 * population)) + 1;
+        }
+        this.newImmigrants = numOfImmigrants;
+        this.population += numOfImmigrants;
+        return numOfImmigrants;
     }
 
     int harvest(int acres) {
@@ -192,7 +217,13 @@ public class Hammurabi {
     }
 
     int grainEatenByRats(int bushels) {
-        return 0;
+        int amountEaten = 0;
+        if (rand.nextInt(100) < 41) {
+            amountEaten = rand.nextInt(10, 31) * 100 / bushels;
+        }
+        this.grainDestroyed = amountEaten;
+        this.grainBushels -= amountEaten;
+        return amountEaten;
     }
 
     int newCostOfLand() {
