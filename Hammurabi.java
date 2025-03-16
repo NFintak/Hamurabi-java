@@ -26,40 +26,23 @@ public class Hammurabi {
     }
 
     void playGame() {
-        this.yearNum = yearNum;
-        this.population = population;
-        this.grainBushels = grainBushels;
-        this.landOwned = landOwned;
-        this.landVal = landVal;
-        this.plantedLand = plantedLand;
-        this.bushelsFed = bushelsFed;
-        this.deaths = deaths;
-        this.starvationDeaths = starvationDeaths;
-        this.plagueDeaths = plagueDeaths;
-        this.newImmigrants = newImmigrants;
-        this.currentHarvest = currentHarvest;
-        this.rateOfHarvest = rateOfHarvest;
-        this.grainDestroyed = grainDestroyed;
-
         while (this.yearNum < 11) {
-
             openingMessage();
             askHowManyAcresToBuy(this.landVal, this.grainBushels);
             askHowManyAcresToSell(this.landVal, this.landOwned);
             askHowMuchGrainToFeedPeople(this.grainBushels);
             askHowManyAcresToPlant(this.landOwned, this.population, this.grainBushels);
-
             //plagueDeaths();
             starvationDeaths(this.population, this.bushelsFed);
             if (uprising(this.population, this.starvationDeaths)) {
                 this.yearNum = 12;
             }
-
-            immigrants(this.population, this.landOwned, this.grainBushels);
+            if (this.starvationDeaths == 0) {
+                immigrants(this.population, this.landOwned, this.grainBushels);
+            }
             harvest(this.plantedLand);
-            //grainEatenByRats(this.grainBushels);
+            grainEatenByRats(this.grainBushels);
             newCostOfLand();
-
             this.yearNum++;
         }
         endGameSummary();
@@ -196,12 +179,12 @@ public class Hammurabi {
     }
 
     int immigrants(int population, int acresOwned, int grainInStorage) {
-        int numOfImmigrants = 0;
-        if (this.starvationDeaths != 0) {
-            return numOfImmigrants;
-        } else {
-            numOfImmigrants = ((20 * acresOwned + grainInStorage) / (100 * population)) + 1;
-        }
+        int numOfImmigrants = ((20 * acresOwned + grainInStorage) / (100 * population)) + 1;
+//        if (this.starvationDeaths != 0) {
+//            return numOfImmigrants;
+//        } else {
+//            numOfImmigrants = ((20 * acresOwned + grainInStorage) / (100 * population)) + 1;
+//        }
         this.newImmigrants = numOfImmigrants;
         this.population += numOfImmigrants;
         return numOfImmigrants;
