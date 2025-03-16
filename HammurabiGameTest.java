@@ -52,12 +52,12 @@ public class HammurabiGameTest {
             fail("You starved a negative number of people!");
         }
     }
-//
-//    @Test
-//    public final void testUprising() {
-//        assertTrue("Should have had an uprising!", ham.uprising(1000, 451));
-//        assertFalse("Should not have had an uprising!", ham.uprising(1000, 449));
-//    }
+
+    @Test
+    public final void testUprising() {
+        assertTrue("Should have had an uprising!", ham.uprising(1000, 451));
+        assertFalse("Should not have had an uprising!", ham.uprising(1000, 449));
+    }
 //
 //    @Test
 //    public final void testImmigrants() {
