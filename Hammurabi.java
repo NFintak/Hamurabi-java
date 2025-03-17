@@ -40,11 +40,9 @@ public class Hammurabi {
             if (uprising(this.population, this.starvationDeaths)) {
                 this.yearNum = 12;
             }
-            //while (this.starvationDeaths == 0) {
-            //    immigrants(this.population, this.landOwned, this.grainBushels);
-            //}
+            immigrants(this.population, this.landOwned, this.grainBushels);
             harvest(this.plantedLand);
-            //grainEatenByRats(this.grainBushels);
+            grainEatenByRats(this.grainBushels);
             newCostOfLand();
             this.yearNum++;
         }
@@ -186,7 +184,12 @@ public class Hammurabi {
 
     int immigrants(int population, int acresOwned, int grainInStorage) {
         int numOfImmigrants = ((20 * acresOwned + grainInStorage) / (100 * population)) + 1;
-        this.newImmigrants = numOfImmigrants;
+        if (this.starvationDeaths == 0) {
+            this.newImmigrants = numOfImmigrants;
+        } else {
+            this.newImmigrants = 0;
+        }
+        //this.newImmigrants = numOfImmigrants;
         this.population += this.newImmigrants;
         this.totalPop += this.newImmigrants;
         return numOfImmigrants;
