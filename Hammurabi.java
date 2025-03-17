@@ -40,11 +40,11 @@ public class Hammurabi {
             if (uprising(this.population, this.starvationDeaths)) {
                 this.yearNum = 12;
             }
-            while (this.starvationDeaths == 0) {
-                immigrants(this.population, this.landOwned, this.grainBushels);
-            }
+            //while (this.starvationDeaths == 0) {
+            //    immigrants(this.population, this.landOwned, this.grainBushels);
+            //}
             harvest(this.plantedLand);
-            grainEatenByRats(this.grainBushels);
+            //grainEatenByRats(this.grainBushels);
             newCostOfLand();
             this.yearNum++;
         }
