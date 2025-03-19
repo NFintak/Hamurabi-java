@@ -18,31 +18,31 @@ public class HammurabiGameTest {
         ham = new Hammurabi();
     }
 
-//    @Test
-//    public final void testPlagueDeaths1() {
-//        int number_of_plagues = 0;
-//        for (int i = 0; i < 10000; i++) {
-//            int deaths = ham.plagueDeaths(100);
-//            if (deaths > 0) {
-//                number_of_plagues += 1;
-//            }
-//        }
-//        int percentPlagues = number_of_plagues / 100;
-//        assertTrue("Number of plagues is about " + percentPlagues + ", not about 15%.",
-//                   about(1500, number_of_plagues));
-//    }
-//
-//    @Test
-//    public final void testPlagueDeaths2() {
-//        int deaths = 0;
-//        for (int i = 0; i < 10000; i++) {
-//            deaths = ham.plagueDeaths(100);
-//            if (deaths > 0) break;
-//        }
-//        assertEquals("In a plague, " + deaths + "% of your people die, not 50%.",
-//                     50, deaths);
-//    }
-//
+    @Test
+    public final void testPlagueDeaths1() {
+        int number_of_plagues = 0;
+        for (int i = 0; i < 10000; i++) {
+            int deaths = ham.plagueDeaths(100);
+            if (deaths > 0) {
+                number_of_plagues += 1;
+            }
+        }
+        int percentPlagues = number_of_plagues / 10000;
+        assertTrue("Number of plagues is about " + percentPlagues + ", not about 15%.",
+                   about(1500, number_of_plagues));
+    }
+
+    @Test
+    public final void testPlagueDeaths2() {
+        int deaths = 0;
+        for (int i = 0; i < 10000; i++) {
+            deaths = ham.plagueDeaths(100);
+            if (deaths > 0) break;
+        }
+        assertEquals("In a plague, " + deaths + "% of your people die, not 50%.",
+                     50, deaths);
+    }
+
     @Test
     public final void testStarvationDeaths() {
         int deaths = ham.starvationDeaths(100, 1639);

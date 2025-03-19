@@ -35,7 +35,7 @@ public class Hammurabi {
             askHowManyAcresToSell(this.landVal, this.landOwned);
             askHowMuchGrainToFeedPeople(this.grainBushels);
             askHowManyAcresToPlant(this.landOwned, this.population, this.grainBushels);
-            //plagueDeaths();
+            plagueDeaths(this.population);
             starvationDeaths(this.population, this.bushelsFed);
             if (uprising(this.population, this.starvationDeaths)) {
                 this.yearNum = 12;
@@ -159,7 +159,13 @@ public class Hammurabi {
     }
 
     int plagueDeaths(int population) {
-        return 0;
+        int halfPop = 0;
+        if (rand.nextInt(100) < 16) {
+            halfPop = (population / 2);
+        }
+        this.plagueDeaths = halfPop;
+        this.population -= halfPop;
+        return halfPop;
     }
 
     int starvationDeaths(int population, int bushelsFedToPeople) {
@@ -189,7 +195,6 @@ public class Hammurabi {
         } else {
             this.newImmigrants = 0;
         }
-        //this.newImmigrants = numOfImmigrants;
         this.population += this.newImmigrants;
         this.totalPop += this.newImmigrants;
         return numOfImmigrants;
